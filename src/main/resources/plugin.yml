@@ -1,0 +1,16 @@
+name: PiskoClicker
+version: ${project.version}
+main: com.gay.piskoclicker.PiskoClicker
+authors: [oofxFrozen]
+description: CLICK ON DICKS AND EARN MONEY
+commands:
+  money:
+    description: Check your current amount of dicks!
+    usage: /money
+  top:
+    description: Shows top of players.
+    usage: /top
+permissions:
+  admin.*:
+    description: Admin perms
+    default: op
