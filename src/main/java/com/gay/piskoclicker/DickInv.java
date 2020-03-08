@@ -39,6 +39,16 @@ public class DickInv implements Listener {
         rightHand.setItemMeta(meta);
         arrayList.clear();
 
+        ItemStack tyan = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        meta = tyan.getItemMeta();
+        meta.setDisplayName(ChatColor.WHITE + "Пусть тян делает все за тебя.");
+        arrayList.add(ChatColor.WHITE + "Level: " + ChatColor.GOLD + PiskoClicker.getInstance().getConfig().get("Users." + p.getUniqueId() + ".afkBoosters.1.lvl"));
+        arrayList.add(ChatColor.WHITE + "Cost: " + ChatColor.GOLD + PiskoClicker.getInstance().getConfig().getInt("Users." + p.getUniqueId() + ".afkBoosters.1.cost"));
+        arrayList.add(ChatColor.WHITE + "Adds Per Second: " + ChatColor.GOLD + PiskoClicker.getInstance().getConfig().get("Users." + p.getUniqueId() + ".afkBoosters.1.multiplier"));
+        meta.setLore(arrayList);
+        tyan.setItemMeta(meta);
+        arrayList.clear();
+
         ItemStack pinkDick = new ItemStack(Material.WOOL, 1, (short) 6);
         ItemStack redDick = new ItemStack(Material.WOOL, 1, (short) 14);
         meta = pinkDick.getItemMeta();
@@ -58,6 +68,7 @@ public class DickInv implements Listener {
         inventory.setItem(23, pinkDick);
         inventory.setItem(18, leftHand);
         inventory.setItem(19, rightHand);
+        inventory.setItem(26, tyan);
 
         p.openInventory(inventory);
     }

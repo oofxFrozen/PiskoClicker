@@ -12,6 +12,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.*;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Collections;
 import java.util.UUID;
@@ -32,6 +33,21 @@ public class Events implements Listener {
     }
     public static double getCost (Player player, int booster) {
        return PiskoClicker.getInstance().getConfig().getDouble("Users." + player.getUniqueId() + ".boosters." + booster + ".cost");
+    }
+    public static double getAfkMultiplier (Player player) {
+        return PiskoClicker.getInstance().getConfig().getDouble("Users." + player.getUniqueId() + ".afkMultiplier");
+    }
+    public static void setAfkMultiplier (Player player, double value) {
+        PiskoClicker.getInstance().getConfig().set("Users." + player.getUniqueId() + ".afkMultiplier", getAfkMultiplier(player) + value);
+    }
+    public static void setAfkLevel (Player player, int booster) {
+        PiskoClicker.getInstance().getConfig().set("Users." + player.getUniqueId() + ".afkBoosters." + booster + ".lvl", PiskoClicker.getInstance().getConfig().getInt("Users." + player.getUniqueId() + ".afkBoosters." + booster + ".lvl") + 1);
+    }
+    public static void setAfkCost (Player player, int booster) {
+        PiskoClicker.getInstance().getConfig().set("Users." + player.getUniqueId() + ".afkBoosters." + booster + ".cost", PiskoClicker.getInstance().getConfig().getInt("Users." + player.getUniqueId() + ".afkBoosters." + booster + ".cost")*1.2);
+    }
+    public static double getAfkCost (Player player, int booster) {
+        return PiskoClicker.getInstance().getConfig().getDouble("Users." + player.getUniqueId() + ".afkBoosters." + booster + ".cost");
     }
     public static String getBalance (Player player) {
         return PiskoClicker.getInstance().getConfig().getString("Users." + player.getUniqueId() + ".balance");
@@ -158,8 +174,21 @@ public class Events implements Listener {
                         addBalance(player, -getCost(player, 2));
                         setLevel(player, 2);
                         setCost(player, 2);
-                        setMultiplier(player, 2);
+                        setMultiplier(player, 1);
                         i.openPiskaInventory(player);
+                    } else {
+                        player.closeInventory();
+                        player.sendMessage(ChatColor.DARK_RED + "У Вас не хватает средств на покупку данного бустера!");
+                    }
+                }
+                if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.WHITE + "Пусть тян делает все за тебя.")) {
+                    if (Double.parseDouble(getBalance(player)) >= getAfkCost(player, 1)) {
+                        addBalance(player, -getAfkCost(player, 1));
+                        setAfkLevel(player, 1);
+                        setAfkCost(player, 1);
+                        setAfkMultiplier(player, 5);
+                        i.openPiskaInventory(player);
+                        startBoosters(player);
                     } else {
                         player.closeInventory();
                         player.sendMessage(ChatColor.DARK_RED + "У Вас не хватает средств на покупку данного бустера!");
@@ -183,6 +212,17 @@ public class Events implements Listener {
 
 
 
+    BukkitTask booster1;
+    public void startBoosters (Player player) {
+        if (booster1 != null) booster1.cancel();
+        if (PiskoClicker.getInstance().getConfig().getInt("Users." + player.getUniqueId() + ".afkBoosters.1.lvl") > 0) {
+            booster1 = Bukkit.getScheduler().runTaskTimerAsynchronously(PiskoClicker.getInstance(),() -> {
+                if (player.isOnline()) {
+                    addBalance(player, getAfkMultiplier(player));
+                } else booster1.cancel();
+            }, 0L, 20L);
+        }
+    }
 
 
 
@@ -197,8 +237,14 @@ public class Events implements Listener {
         }
         if (PiskoClicker.getInstance().getConfig().get("Users." + p.getUniqueId() + ".boosters.2.multiplier") == null) {
             PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".boosters.2.lvl", 0);
-            PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".boosters.2.cost", 1000);
+            PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".boosters.2.cost", 2000);
             PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".boosters.2.multiplier", 1);
         }
+        if (PiskoClicker.getInstance().getConfig().get("Users." + p.getUniqueId() + ".afkBoosters.1.multiplier") == null) {
+            PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".afkBoosters.1.lvl", 0);
+            PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".afkBoosters.1.cost", 10000);
+            PiskoClicker.getInstance().getConfig().set("Users." + p.getUniqueId() + ".afkBoosters.1.multiplier", 5);
+        }
+        startBoosters(p);
     }
 }
