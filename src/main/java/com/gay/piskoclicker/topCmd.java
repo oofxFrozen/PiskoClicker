@@ -41,6 +41,7 @@ public class topCmd implements CommandExecutor {
                         if (Bukkit.getServer().getOnlinePlayers().contains(Bukkit.getServer().getPlayer(realUUIDs[i])))
                             builder.append(" ").append(ChatColor.RED).append(ChatColor.BOLD).append(i + 1).append(". ").append(ChatColor.YELLOW).append(Bukkit.getServer().getPlayer(realUUIDs[i]).getName()).append(ChatColor.RESET).append(ChatColor.GOLD).append(" [").append(ChatColor.LIGHT_PURPLE).append((int) Events.getBalanceDoubleUUID(realUUIDs[i])).append(ChatColor.GOLD).append("]").append(ChatColor.RESET).append("\n");
                         else
+                            System.out.println(realUUIDs[i]);
                             builder.append(" ").append(ChatColor.RED).append(ChatColor.BOLD).append(i + 1).append(". ").append(ChatColor.YELLOW).append(Bukkit.getServer().getOfflinePlayer(realUUIDs[i]).getName()).append(ChatColor.RESET).append(ChatColor.GOLD).append(" [").append(ChatColor.LIGHT_PURPLE).append((int) Events.getBalanceDoubleUUID(realUUIDs[i])).append(ChatColor.GOLD).append("]").append(ChatColor.RESET).append("\n");
                         break;
                     case (1):
