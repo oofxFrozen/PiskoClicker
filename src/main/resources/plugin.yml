@@ -10,6 +10,9 @@ commands:
   top:
     description: Shows top of players.
     usage: /top
+  mytime:
+    description: Get your played time!
+    usage: /mytime
 permissions:
   admin.*:
     description: Admin perms
