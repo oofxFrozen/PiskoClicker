@@ -17,3 +17,4 @@ permissions:
   admin.*:
     description: Admin perms
     default: op
+

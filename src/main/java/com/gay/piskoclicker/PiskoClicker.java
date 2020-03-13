@@ -5,6 +5,8 @@ import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.Objects;
+
 public final class PiskoClicker extends JavaPlugin {
 
     public static PiskoClicker instance;
@@ -22,9 +24,9 @@ public final class PiskoClicker extends JavaPlugin {
         getLogger().info(ChatColor.AQUA + "PiskoClicker successfully enabled! Loading config file...");
         loadConfig();
         getLogger().info(ChatColor.GREEN + "The config was successfully loaded!");
-        getCommand("money").setExecutor(new moneyCmd());
-        getCommand("top").setExecutor(new topCmd());
-        getCommand("mytime").setExecutor(new mytimeCmd());
+        Objects.requireNonNull(getCommand("money")).setExecutor(new moneyCmd());
+        Objects.requireNonNull(getCommand("top")).setExecutor(new topCmd());
+        Objects.requireNonNull(getCommand("mytime")).setExecutor(new mytimeCmd());
         for (String str : getConfig().getStringList("Users.")) {
             getConfig().set("Users." + str + ".helloDelay", true);
         }

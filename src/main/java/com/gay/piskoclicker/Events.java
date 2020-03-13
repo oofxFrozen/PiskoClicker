@@ -15,6 +15,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.Collections;
+import java.util.Objects;
 
 public class Events implements Listener {
 
@@ -213,7 +214,7 @@ public class Events implements Listener {
 
     @EventHandler
     public void piskaUnDropable (PlayerDropItemEvent e) {
-        if (e.getItemDrop().getItemStack().hasItemMeta() && e.getItemDrop().getItemStack().getItemMeta().hasDisplayName() && e.getItemDrop().getItemStack().getItemMeta().getLore().equals(Collections.singletonList(ChatColor.WHITE + "ПКМ, чтобы открыть меню."))) {
+        if (e.getItemDrop().getItemStack().hasItemMeta() && e.getItemDrop().getItemStack().getItemMeta().hasDisplayName() && Objects.equals(e.getItemDrop().getItemStack().getItemMeta().getLore(), Collections.singletonList(ChatColor.WHITE + "ПКМ, чтобы открыть меню."))) {
             e.setCancelled(true);
         } else e.setCancelled(false);
     }
@@ -222,22 +223,24 @@ public class Events implements Listener {
     public void piskaUnCraft (PrepareItemCraftEvent e) {
         if (e.getInventory().contains(Material.BLAZE_ROD))
             for (ItemStack itemStack : e.getInventory().getMatrix())
-                if (itemStack.getItemMeta().hasLore() && itemStack.getItemMeta().getLore()
-                        .equals(Collections.singletonList(ChatColor.WHITE + "ПКМ, чтобы открыть меню."))) {
+                if (itemStack.hasItemMeta() && itemStack.getItemMeta().hasLore())
+                    if (itemStack.getItemMeta().hasLore() && Objects.equals(itemStack.getItemMeta().getLore(),
+                            Collections.singletonList(ChatColor.WHITE + "ПКМ, чтобы открыть меню."))) {
                     itemStack.setType(Material.AIR);
                     return;
-                }
+                    }
     }
 
     @EventHandler
     public void chatMessages (AsyncPlayerChatEvent e) {
-        e.setMessage(ChatColor.GOLD + "[" + ChatColor.LIGHT_PURPLE + (int) Double.parseDouble(getBalance(e.getPlayer())) + ChatColor.GOLD + "] " + ChatColor.WHITE + e.getPlayer().getName() + ": " + e.getMessage());
+        e.setMessage(ChatColor.GOLD + "[" + ChatColor.LIGHT_PURPLE
+                + (int) Double.parseDouble(getBalance(e.getPlayer())) + ChatColor.GOLD + "] " + ChatColor.WHITE + e.getPlayer().getName() + ": " + e.getMessage());
         e.setFormat(e.getMessage());
     }
 
     @EventHandler
     public void farmingDicks (InventoryClickEvent e) {
-        if (e.getInventory() != null && e.getInventory().getName() != null && e.getInventory().getName().equals(ChatColor.GOLD + "DICK CLICKER by " + ChatColor.BOLD + ChatColor.AQUA + "oofxFrozen")) {
+        if (Objects.requireNonNull(Objects.requireNonNull(e.getInventory().getItem(1)).getI18NDisplayName()).equals("" + ChatColor.MAGIC + ChatColor.BOLD + " HELP ME ")) {
             Player player = (Player) e.getWhoClicked();
             if (e.getCurrentItem() != null && !e.isShiftClick() && e.getCurrentItem().hasItemMeta() && e.getCurrentItem().getItemMeta().hasDisplayName() ) {
                 if (e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.LIGHT_PURPLE + "CLICK ME TO EARN DICKS") || e.getCurrentItem().getItemMeta().getDisplayName().equals(ChatColor.RED + "CLICK ME TO EARN DICKS")) {
@@ -264,7 +267,7 @@ public class Events implements Listener {
     public void openInventory (PlayerInteractEvent e) {
         DickInv i = new DickInv();
         if (e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (e.getPlayer().getInventory().getItemInMainHand() != null && e.getPlayer().getInventory().getItemInMainHand().hasItemMeta() && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasDisplayName() && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Писька " + e.getPlayer().getName())) {
+            if (e.getPlayer().getInventory().getItemInMainHand().hasItemMeta() && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().hasDisplayName() && e.getPlayer().getInventory().getItemInMainHand().getItemMeta().getDisplayName().equals(ChatColor.GOLD + "Писька " + e.getPlayer().getName())) {
                 i.openPiskaInventory(e.getPlayer());
                 e.setCancelled(true);
             } else e.setCancelled(false);

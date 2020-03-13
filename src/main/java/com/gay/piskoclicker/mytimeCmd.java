@@ -5,11 +5,14 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Objects;
 
 public class mytimeCmd implements CommandExecutor {
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender,@NotNull Command cmd,@NotNull String label,@NotNull String[] args) {
         if (sender instanceof Player) {
             Player player = (Player) sender;
             long sec, min, hour, day, time;
@@ -26,7 +29,7 @@ public class mytimeCmd implements CommandExecutor {
                             (min > 0 ? min + " minutes, " : "") +
                             (sec > 0 ? sec + " seconds" : ""));
                 } else {
-                    time = Events.getPlayedTime(Bukkit.getServer().getPlayer(args[0]));
+                    time = Events.getPlayedTime(Objects.requireNonNull(Bukkit.getServer().getPlayer(args[0])));
                     sec = time % 60;
                     min = ((time - sec)/60) % 60;
                     hour = ((time - min*60 - sec)/3600) % 24;

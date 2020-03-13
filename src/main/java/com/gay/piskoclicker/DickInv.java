@@ -13,7 +13,7 @@ import java.util.ArrayList;
 public class DickInv implements Listener {
 
     public void openPiskaInventory (Player p) {
-        ItemStack empty = new ItemStack(Material.STAINED_GLASS_PANE, 1, (short) 0);
+        ItemStack empty = new ItemStack(Material.WHITE_STAINED_GLASS_PANE);
         ItemMeta meta = empty.getItemMeta();
         meta.setDisplayName("" + ChatColor.MAGIC + ChatColor.BOLD + "  HELP ME  ");
         empty.setItemMeta(meta);
@@ -29,7 +29,7 @@ public class DickInv implements Listener {
         leftHand.setItemMeta(meta);
         arrayList.clear();
 
-        ItemStack rightHand = new ItemStack(Material.REDSTONE_TORCH_ON);
+        ItemStack rightHand = new ItemStack(Material.REDSTONE_TORCH);
         meta = rightHand.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE + "Накачай правую руку!");
         arrayList.add(ChatColor.WHITE + "Level: " + ChatColor.GOLD + PiskoClicker.getInstance().getConfig().get("Users." + p.getUniqueId() + ".boosters.2.lvl"));
@@ -39,7 +39,7 @@ public class DickInv implements Listener {
         rightHand.setItemMeta(meta);
         arrayList.clear();
 
-        ItemStack tyan = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
+        ItemStack tyan = new ItemStack(Material.PLAYER_HEAD);
         meta = tyan.getItemMeta();
         meta.setDisplayName(ChatColor.WHITE + "Пусть тян делает все за тебя.");
         arrayList.add(ChatColor.WHITE + "Level: " + ChatColor.GOLD + PiskoClicker.getInstance().getConfig().get("Users." + p.getUniqueId() + ".afkBoosters.1.lvl"));
@@ -49,8 +49,8 @@ public class DickInv implements Listener {
         tyan.setItemMeta(meta);
         arrayList.clear();
 
-        ItemStack pinkDick = new ItemStack(Material.WOOL, 1, (short) 6);
-        ItemStack redDick = new ItemStack(Material.WOOL, 1, (short) 14);
+        ItemStack pinkDick = new ItemStack(Material.PINK_WOOL);
+        ItemStack redDick = new ItemStack(Material.RED_WOOL);
         meta = pinkDick.getItemMeta();
         meta.setDisplayName(ChatColor.LIGHT_PURPLE + "CLICK ME TO EARN DICKS");
         pinkDick.setItemMeta(meta);
